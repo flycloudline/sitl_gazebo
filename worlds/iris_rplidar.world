@@ -12,9 +12,8 @@
     <include>
       <uri>model://ground_plane</uri>
     </include>
-    <!-- An asphalt plane -->
     <include>
-      <uri>model://asphalt_plane</uri>
+      <uri>model://almend1</uri>
     </include>
     <include>
       <uri>model://iris_rplidar</uri>
