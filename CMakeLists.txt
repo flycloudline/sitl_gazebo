@@ -18,7 +18,7 @@ include(GNUInstallDirs)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-option(BUILD_GSTREAMER_PLUGIN "enable gstreamer plugin" ON)
+option(BUILD_GSTREAMER_PLUGIN "enable gstreamer plugin" OFF)
 option(BUILD_ROS_INTERFACE "Enable building ROS dependent plugins" OFF)
 
 option(SEND_VISION_ESTIMATION_DATA "Send Mavlink VISION_POSITION_ESTIMATE msgs" OFF)
@@ -378,14 +378,16 @@ if("${GAZEBO_VERSION}" VERSION_LESS "8.0")
   )
   message(STATUS "Adding gst_overlay_widget")
 else()
-  QT5_WRAP_CPP(headers_MOC2 include/gazebo_overlay_widget.h)
-  add_library(gazebo_overlay_widget SHARED ${headers_MOC2} src/gazebo_overlay_widget.cpp)
-  target_link_libraries(gazebo_overlay_widget ${GAZEBO_LIBRARIES} ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${PROTOBUF_LIBRARIES} ${Qt5Test_LIBRARIES})
-  set(plugins
-    ${plugins}
-    gazebo_overlay_widget
-  )
-  message(STATUS "adding gst_overlay_widget")
+  if (GSTREAMER_FOUND)
+    QT5_WRAP_CPP(headers_MOC2 include/gazebo_overlay_widget.h)
+    add_library(gazebo_overlay_widget SHARED ${headers_MOC2} src/gazebo_overlay_widget.cpp)
+    target_link_libraries(gazebo_overlay_widget ${GAZEBO_LIBRARIES} ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${PROTOBUF_LIBRARIES} ${Qt5Test_LIBRARIES})
+    set(plugins
+      ${plugins}
+      gazebo_overlay_widget
+    )
+    message(STATUS "adding gst_overlay_widget")
+  endif()
 endif()
 
 if (GSTREAMER_FOUND)
