@@ -21,7 +21,7 @@ sudo apt-get install gazebo9 libgazebo9-dev
 
 ```bash
 brew tap osrf/simulation
-brew install gazebo9
+brew install gazebo9 gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly
 ```
 
 ### Arch Linux
@@ -61,11 +61,6 @@ pip install rospkg jinja2
 brew tap homebrew/versions
 brew install eigen graphviz libxml2 sdformat3 opencv glib
 brew install homebrew/versions/protobuf260
-```
-
-#### Gstreamer:
-```
-brew install gstreamer gst-plugins-base gst-plugins-good
 ```
 
 ### Arch Linux
