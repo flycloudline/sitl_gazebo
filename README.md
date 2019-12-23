@@ -235,3 +235,14 @@ rm *.deb
 cpack -G DEB
 sudo dpkg -i *.deb
 ```
+
+## Debugging
+
+### GStreamer / Video issues
+
+Run this on the shell before launching the app to get more detailed GStreamer output:
+
+```bash
+export GST_DEBUG=2
+```
+
