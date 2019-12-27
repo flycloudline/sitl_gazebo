@@ -4,6 +4,7 @@ scripts/schemas
 .DS_Store
 *~
 models/iris/*.sdf
+models/almend*
 *.pyc
 .*.sw?
 *-gen.sdf
