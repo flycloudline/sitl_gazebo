@@ -4,6 +4,11 @@
     <gui>
       <plugin name="overlay_widget" filename="libgazebo_overlay_widget.so"/>
     </gui>
+    <scene>
+      <sky>
+        <time>16</time>
+      </sky>
+    </scene>
     <!-- A global light source -->
     <include>
       <uri>model://sun</uri>
