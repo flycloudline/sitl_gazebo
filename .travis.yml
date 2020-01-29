@@ -10,6 +10,10 @@ env:
     - KINETIC="source /opt/ros/kinetic/setup.bash; ${CATKIN_BUILD}"
     - MELODIC="source /opt/ros/melodic/setup.bash; ${CATKIN_BUILD}"
 
+branches:
+  only:
+    - master
+
 matrix:
     include:
         - name: CMake build (Gazebo 7)
@@ -20,7 +24,7 @@ matrix:
           cache:
             ccache: true
           env:
-            - PX4_DOCKER_REPO=px4io/px4-dev-simulation-xenial:2019-10-04
+            - PX4_DOCKER_REPO=px4io/px4-dev-simulation-xenial:2020-01-13
             - BUILD=${CMAKE_BUILD}
         - name: CMake unit tests build and run (Gazebo 7)
           os: linux
@@ -30,7 +34,7 @@ matrix:
           cache:
             ccache: true
           env:
-            - PX4_DOCKER_REPO=px4io/px4-dev-simulation-xenial:2019-10-04
+            - PX4_DOCKER_REPO=px4io/px4-dev-simulation-xenial:2020-01-13
             - BUILD=${CMAKE_UNIT_TEST_BUILD}
         - name: CMake build (Gazebo 9)
           os: linux
@@ -40,7 +44,7 @@ matrix:
           cache:
             ccache: true
           env:
-            - PX4_DOCKER_REPO=px4io/px4-dev-simulation-bionic:2019-10-04
+            - PX4_DOCKER_REPO=px4io/px4-dev-simulation-bionic:2020-01-13
             - BUILD=${CMAKE_BUILD}
         - name: CMake unit tests build and run (Gazebo 9)
           os: linux
@@ -50,7 +54,7 @@ matrix:
           cache:
             ccache: true
           env:
-            - PX4_DOCKER_REPO=px4io/px4-dev-simulation-bionic:2019-10-04
+            - PX4_DOCKER_REPO=px4io/px4-dev-simulation-bionic:2020-01-13
             - BUILD=${CMAKE_UNIT_TEST_BUILD}
         - name: Catkin build on Ubuntu 16.04 with ROS Kinetic (Gazebo 7)
           os: linux
@@ -60,7 +64,7 @@ matrix:
           cache:
             ccache: true
           env:
-            - PX4_DOCKER_REPO=px4io/px4-dev-ros-kinetic:2019-10-04
+            - PX4_DOCKER_REPO=px4io/px4-dev-ros-kinetic:2020-01-13
             - BUILD=${KINETIC}
         - name: Catkin build on Ubuntu 18.04 with ROS Melodic (Gazebo 9)
           os: linux
@@ -70,7 +74,7 @@ matrix:
           cache:
             ccache: true
           env:
-            - PX4_DOCKER_REPO=px4io/px4-dev-ros-melodic:2019-10-04
+            - PX4_DOCKER_REPO=px4io/px4-dev-ros-melodic:2020-01-13
             - BUILD=${MELODIC}
         - name: Validate SDF schemas
           os: linux
@@ -80,17 +84,11 @@ matrix:
           cache:
             ccache: true
           env:
-            - PX4_DOCKER_REPO=px4io/px4-dev-simulation-bionic:2019-10-04
+            - PX4_DOCKER_REPO=px4io/px4-dev-simulation-bionic:2020-01-13
             - BUILD="source ./scripts/validate_sdf.bash"
-        - name: macOS High Sierra (Xcode 10.1)
+        - name: macOS Mojave (Xcode 11.3)
           os: osx
-          osx_image: xcode10.1
-          language: cpp
-          cache:
-            ccache: true
-        - name: macOS Mojave (Xcode 11.2)
-          os: osx
-          osx_image: xcode11.2
+          osx_image: xcode11.3
           language: cpp
           cache:
             ccache: true
@@ -112,13 +110,13 @@ install:
       make install;
       popd;
       popd;
-      brew install gstreamer gst-plugins-base gst-plugins-good glib;
+      brew unlink python@2;
+      brew install gstreamer gst-plugins-base gst-plugins-good glib python;
       brew tap PX4/px4;
       brew install px4-dev;
-      brew tap osrf/simulation;
-      brew install opencv gazebo9;
-      sudo -H pip2 install --upgrade pip setuptools;
-      sudo -H pip2 install rospkg pyserial empy toml numpy pandas jinja2;
+      brew install px4-sim;
+      pip3 install --user --upgrade setuptools;
+      pip3 install --user --upgrade rospkg pyserial empy toml numpy pandas jinja2;
     fi
 
 after_install:
@@ -129,6 +127,15 @@ after_install:
 
 script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      echo $PYTHONPATH;
+      which python;
+      python --version;
+      which pip;
+      pip --version;
+      which python3;
+      python3 --version;
+      which pip3;
+      pip3 --version;
       mkdir build;
       (cd build && cmake -DENABLE_UNIT_TESTS=On .. &&
       make -j$(sysctl -n hw.physicalcpu) -l$(sysctl -n hw.physicalcpu) &&
