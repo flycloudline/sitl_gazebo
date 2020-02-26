@@ -95,14 +95,18 @@ void GstCameraPlugin::startGstThread() {
   }
 
   GstElement* dataSrc = gst_element_factory_make("appsrc", "AppSrc");
-  GstElement* testSrc = gst_element_factory_make("videotestsrc", "FileSrc");
   GstElement* conv  = gst_element_factory_make("videoconvert", "Convert");
   GstElement* encoder = gst_element_factory_make("x264enc", "AvcEncoder");
   GstElement* parser  = gst_element_factory_make("h264parse", "Parser");
   GstElement* payload = gst_element_factory_make("rtph264pay", "PayLoad");
   GstElement* sink  = gst_element_factory_make("udpsink", "UdpSink");
-  if (!dataSrc || !testSrc || !conv || !encoder || !parser || !payload || !sink) {
-    gzerr << "ERR: Create elements failed. \n";
+
+  if (!dataSrc) gzerr << "ERR: Failed to create GStreamer AppSrc. \n";
+  if (!conv) gzerr << "ERR: Failed to create GStreamer conv. \n";
+  if (!encoder) gzerr << "ERR: Failed to create GStreamer AvcEncoder. \n";
+
+  if (!dataSrc || !conv || !encoder || !parser || !payload || !sink) {
+    gzerr << "ERR: Pipeline init failed. \n";
     return;
   }
 

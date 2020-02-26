@@ -1,6 +1,14 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
   <world name="default">
+    <gui>
+      <plugin name="overlay_widget" filename="libgazebo_overlay_widget.so"/>
+    </gui>
+    <scene>
+      <sky>
+        <time>16</time>
+      </sky>
+    </scene>
     <!-- A global light source -->
     <include>
       <uri>model://sun</uri>
@@ -10,7 +18,7 @@
       <pose>1.01 0.98 0.83 0 0 1.14</pose>
     </include>
     <include>
-      <uri>model://uneven_ground</uri>
+      <uri>model://almend1</uri>
     </include>
     <physics name='default_physics' default='0' type='ode'>
       <gravity>0 0 -9.8066</gravity>
@@ -28,9 +36,9 @@
           <contact_surface_layer>0.001</contact_surface_layer>
         </constraints>
       </ode>
-      <max_step_size>0.004</max_step_size>
+      <max_step_size>0.002</max_step_size>
       <real_time_factor>1</real_time_factor>
-      <real_time_update_rate>250</real_time_update_rate>
+      <real_time_update_rate>500</real_time_update_rate>
       <magnetic_field>6.0e-6 2.3e-5 -4.2e-5</magnetic_field>
     </physics>
     <gui fullscreen='0'>

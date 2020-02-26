@@ -1,6 +1,14 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
   <world name="default">
+    <gui>
+      <plugin name="overlay_widget" filename="libgazebo_overlay_widget.so"/>
+    </gui>
+    <scene>
+      <sky>
+        <time>16</time>
+      </sky>
+    </scene>
     <!-- A global light source -->
     <include>
       <uri>model://sun</uri>
@@ -10,7 +18,7 @@
       <uri>model://ground_plane</uri>
     </include>
     <include>
-      <uri>model://asphalt_plane</uri>
+      <uri>model://almend1</uri>
     </include>
     <physics name='default_physics' default='0' type='ode'>
       <gravity>0 0 -9.8066</gravity>

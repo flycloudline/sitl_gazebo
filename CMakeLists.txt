@@ -313,6 +313,7 @@ add_library(gazebo_geotagged_images_plugin SHARED src/gazebo_geotagged_images_pl
 add_library(gazebo_gps_plugin SHARED src/gazebo_gps_plugin.cpp)
 add_library(gazebo_irlock_plugin SHARED src/gazebo_irlock_plugin.cpp)
 add_library(gazebo_lidar_plugin SHARED src/gazebo_lidar_plugin.cpp)
+add_library(gazebo_opticalflow_mockup_plugin SHARED src/gazebo_opticalflow_mockup_plugin.cpp)
 add_library(gazebo_opticalflow_plugin SHARED src/gazebo_opticalflow_plugin.cpp)
 add_library(gazebo_sonar_plugin SHARED src/gazebo_sonar_plugin.cpp)
 add_library(gazebo_uuv_plugin SHARED src/gazebo_uuv_plugin.cpp)
@@ -327,12 +328,14 @@ add_library(gazebo_wind_plugin SHARED src/gazebo_wind_plugin.cpp)
 add_library(gazebo_magnetometer_plugin SHARED src/gazebo_magnetometer_plugin.cpp src/geo_mag_declination.cpp)
 add_library(gazebo_barometer_plugin SHARED src/gazebo_barometer_plugin.cpp)
 add_library(gazebo_parachute_plugin SHARED src/gazebo_parachute_plugin.cpp)
+add_library(gazebo_catapult_plugin SHARED src/gazebo_catapult_plugin.cpp)
 
 set(plugins
   gazebo_geotagged_images_plugin
   gazebo_gps_plugin
   gazebo_irlock_plugin
   gazebo_lidar_plugin
+  gazebo_opticalflow_mockup_plugin
   gazebo_opticalflow_plugin
   gazebo_sonar_plugin
   gazebo_uuv_plugin
@@ -347,6 +350,7 @@ set(plugins
   gazebo_magnetometer_plugin
   gazebo_barometer_plugin
   gazebo_parachute_plugin
+  gazebo_catapult_plugin
   )
 
 foreach(plugin ${plugins})
@@ -373,6 +377,29 @@ if (BUILD_ROS_INTERFACE)
     ${roscpp_LIBRARIES}
     ${GAZEBO_libraries}
   )
+endif()
+
+
+if("${GAZEBO_VERSION}" VERSION_LESS "8.0")
+  QT4_WRAP_CPP(headers_MOC include/gazebo_overlay_widget.h)
+  add_library(gazebo_overlay_widget SHARED ${headers_MOC} src/gazebo_overlay_widget.cpp)
+  target_link_libraries(gazebo_overlay_widget ${GAZEBO_LIBRARIES} ${QT_LIBRARIES} ${PROTOBUF_LIBRARIES})
+  set(plugins
+    ${plugins}
+    gazebo_overlay_widget
+  )
+  message(STATUS "Adding gst_overlay_widget")
+else()
+  if (GSTREAMER_FOUND)
+    QT5_WRAP_CPP(headers_MOC2 include/gazebo_overlay_widget.h)
+    add_library(gazebo_overlay_widget SHARED ${headers_MOC2} src/gazebo_overlay_widget.cpp)
+    target_link_libraries(gazebo_overlay_widget ${GAZEBO_LIBRARIES} ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${PROTOBUF_LIBRARIES} ${Qt5Test_LIBRARIES})
+    set(plugins
+      ${plugins}
+      gazebo_overlay_widget
+    )
+    message(STATUS "adding gst_overlay_widget")
+  endif()
 endif()
 
 if (GSTREAMER_FOUND)

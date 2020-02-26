@@ -22,7 +22,7 @@
           </friction>
         </surface>
       </collision>
-      <visual name="visual">
+      <!-- <visual name="visual">
         <cast_shadows>false</cast_shadows>
         <geometry>
           <plane>
@@ -36,7 +36,7 @@
             <name>Gazebo/Grey</name>
           </script>
         </material>
-      </visual>
+      </visual> -->
     </link>
   </model>
 </sdf>

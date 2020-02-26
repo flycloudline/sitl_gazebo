@@ -4,6 +4,11 @@
     <gui>
       <plugin name="video_widget" filename="libgazebo_video_stream_widget.so"/>
     </gui>
+    <scene>
+      <sky>
+        <time>16</time>
+      </sky>
+    </scene>
     <!-- A global light source -->
     <include>
       <uri>model://sun</uri>
@@ -13,10 +18,10 @@
       <uri>model://ground_plane</uri>
     </include>
     <include>
-      <uri>model://typhoon_h480</uri>
+      <uri>model://almend1</uri>
     </include>
     <include>
-      <uri>model://asphalt_plane</uri>
+      <uri>model://typhoon_h480</uri>
     </include>
     <physics name='default_physics' default='0' type='ode'>
       <gravity>0 0 -9.8066</gravity>
@@ -34,9 +39,9 @@
           <contact_surface_layer>0.001</contact_surface_layer>
         </constraints>
       </ode>
-      <max_step_size>0.004</max_step_size>
+      <max_step_size>0.002</max_step_size>
       <real_time_factor>1</real_time_factor>
-      <real_time_update_rate>250</real_time_update_rate>
+      <real_time_update_rate>500</real_time_update_rate>
       <magnetic_field>6.0e-6 2.3e-5 -4.2e-5</magnetic_field>
     </physics>
   </world>
