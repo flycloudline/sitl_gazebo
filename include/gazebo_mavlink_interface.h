@@ -128,6 +128,31 @@ enum class Framing : uint8_t {
 	bad_signature = MAVLINK_FRAMING_BAD_SIGNATURE,
 };
 
+
+//! Enumeration to use on the bitmask in HIL_SENSOR
+enum class SensorSource {
+  ACCEL		= 0b111,
+  GYRO		= 0b111000,
+  MAG		= 0b111000000,
+  BARO		= 0b1101000000000,
+  DIFF_PRESS	= 0b10000000000,
+};
+
+//! OR operation for the enumeration and unsigned types that returns the bitmask
+template<typename A, typename B>
+static inline uint32_t operator |(A lhs, B rhs) {
+  // make it type safe
+  static_assert((std::is_same<A, uint32_t>::value || std::is_same<A, SensorSource>::value),
+		"first argument is not uint32_t or SensorSource enum type");
+  static_assert((std::is_same<B, uint32_t>::value || std::is_same<B, SensorSource>::value),
+		"second argument is not uint32_t or SensorSource enum type");
+
+  return static_cast<uint32_t> (
+    static_cast<std::underlying_type<SensorSource>::type>(lhs) |
+    static_cast<std::underlying_type<SensorSource>::type>(rhs)
+  );
+}
+
 class GazeboMavlinkInterface : public ModelPlugin {
 public:
   GazeboMavlinkInterface() : ModelPlugin(),
@@ -164,6 +189,9 @@ public:
     zero_position_disarmed_ {},
     zero_position_armed_ {},
     input_index_ {},
+    mag_updated_(false),
+    baro_updated_(false),
+    diff_press_updated_(false),
     groundtruth_lat_rad(0.0),
     groundtruth_lon_rad(0.0),
     groundtruth_altitude(0.0),
@@ -265,6 +293,7 @@ private:
   void pollForMAVLinkMessages();
   void pollFromQgcAndSdk();
   void SendSensorMessages();
+  void SendGroundTruth();
   void handle_control(double _dt);
   bool IsRunning();
   void onSigInt();
@@ -338,6 +367,10 @@ private:
   common::Time last_time_;
   common::Time last_imu_time_;
   common::Time last_actuator_time_;
+
+  bool mag_updated_;
+  bool baro_updated_;
+  bool diff_press_updated_;
 
   double groundtruth_lat_rad;
   double groundtruth_lon_rad;
