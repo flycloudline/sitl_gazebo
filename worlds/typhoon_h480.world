@@ -20,8 +20,6 @@
     <include>
       <uri>model://almend1</uri>
     </include>
-    <include>
-      <uri>model://typhoon_h480</uri>
     </include>
     <physics name='default_physics' default='0' type='ode'>
       <gravity>0 0 -9.8066</gravity>
