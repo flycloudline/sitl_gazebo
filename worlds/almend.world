@@ -18,8 +18,14 @@
       <uri>model://ground_plane</uri>
     </include>
     <include>
-      <uri>model://asphalt_plane</uri>
+      <uri>model://almend1</uri>
     </include>
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <latitude_deg>47.355723</latitude_deg>
+      <longitude_deg>8.518744</longitude_deg>
+      <elevation>488.0</elevation>
+    </spherical_coordinates>
     <physics name='default_physics' default='0' type='ode'>
       <gravity>0 0 -9.8066</gravity>
       <ode>
