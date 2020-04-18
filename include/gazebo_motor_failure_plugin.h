@@ -28,10 +28,6 @@
 
 // ROS Topic subscriber
 #include <thread>
-#include "ros/ros.h"
-#include "ros/callback_queue.h"
-#include "ros/subscribe_options.h"
-#include <std_msgs/Int32.h>
 
 namespace gazebo {
 
